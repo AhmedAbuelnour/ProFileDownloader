@@ -146,7 +146,7 @@
 
         internal static FileProperites GetFileProperites(string LocalFilePath)
         {
-            if (File.Exists(LocalFilePath))
+            try
             {
                 using (Stream localFile = new FileStream(LocalFilePath, FileMode.Open, FileAccess.Read))
                 {
@@ -158,7 +158,7 @@
                     };
                 }
             }
-            else
+            catch
             {
                 throw new Exception("No such file is found with the provided path, make sure to provide a correct path");
             }
