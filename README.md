@@ -16,7 +16,7 @@ namespace ConsoleApp
                 LocalFilePath = "fileName.extension"
             };
 
-            ServerFile serverFile = await      FileUtilities.GetServerFilePropertiesAsync("Url");
+            ServerFile serverFile = await FileUtilities.GetServerFilePropertiesAsync("Url");
 
             await fileDownloader.DownloadFileAsync(serverFile, (e) =>
             {
