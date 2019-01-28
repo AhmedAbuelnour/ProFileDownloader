@@ -1,133 +1,192 @@
-﻿namespace ProFileDownloader.FileTransferer
+namespace ProFileDownloader.FileTransferer
 {
     using ProFileDownloader.NetworkFile;
     using System;
     using System.IO;
     using System.IO.Pipelines;
+    using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
-
-
     /// <summary>
-    /// Responsible for downloading a file in an easy way
+    /// A class which represents a file downloader
     /// </summary>
-    public class FileDownloader
+    public class Downloader
     {
+        internal string Url { get; set; }
 
-        private readonly Pipe Pipeline;
+        internal string DirectoryPath { get; set; }
+
         /// <summary>
-        /// Initialize the Pipe
+        /// Giving a name to overwrite the remote suggested file name.
         /// </summary>
-        public FileDownloader()
+        public string SuggestedFileName { get; set; }
+
+        internal ServerFile RemoteFileProperties { get; set; }
+
+        internal string LocalFileFullPath { get; set; }
+
+        /// <summary>
+        /// Initialize the downloader.
+        /// </summary>
+        /// <param name="Url">Url of the remote file.</param>
+        /// <param name="DirectoryPath">Where the local file should be saved at.</param>
+        public Downloader(string Url , string DirectoryPath)
         {
-            Pipeline = new Pipe();
+            this.Url = Url;
+            this.DirectoryPath = DirectoryPath;
+        }
+        private async Task<bool> IsResumable()
+        {
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Range = new RangeHeaderValue(1, 1);
+                    using (HttpResponseMessage Result = await httpClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        if (Result.StatusCode == HttpStatusCode.PartialContent)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
-        /// Represents your local file, which represents the downloaded file at the end.
+        /// Giving you a readable format for the remote file size.
         /// </summary>
-        public string LocalFilePath { get; set; }
+        public string SizeInReadableFormat => RemoteFileProperties.Size.SizeSuffix();
+
+        /// <summary>
+        /// Loads the downloader with the required information about the remote file.
+        /// </summary>
+        /// <returns></returns>
+        public async Task LoadRemoteFilePropertiesAsync()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                if (string.IsNullOrWhiteSpace(Url)) throw new ArgumentNullException("Url", "Can't let Url to be empty!");
+
+                // Validation for https and http
+                if (!(Url.StartsWith("https://") || Url.StartsWith("http://"))) throw new Exception("Only Support Http, Https protocols");
+
+                // Sends Http Get Request
+                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
+
+                if (httpResponseMessage.IsSuccessStatusCode == false)
+                {
+                    throw new Exception(httpResponseMessage.ReasonPhrase);
+                }
+                RemoteFileProperties = new ServerFile 
+                {
+                    Name = httpResponseMessage.Content.Headers?.ContentDisposition?.FileName ?? httpResponseMessage.RequestMessage.RequestUri.Segments.LastOrDefault(),
+                    MediaType = httpResponseMessage.Content.Headers.ContentType.MediaType,
+                    Size = httpResponseMessage.Content.Headers.ContentLength.GetValueOrDefault(),
+                    Extension = httpResponseMessage.Content.Headers.ContentType.MediaType.GetFileExtension(),
+                    IsResumable = await IsResumable(),
+                    DownloadContent = await httpResponseMessage.Content.ReadAsStreamAsync(),
+                    TotalReadBytes = 0
+                };
+            }
+
+            LocalFileFullPath = $"{DirectoryPath}/{SuggestedFileName ?? RemoteFileProperties.Name}";
+        }
+
+        /// <summary>
+        /// Indicates if the remote server supports the file segmentation or not
+        /// </summary>
+        public bool IsRemoteServerSupportFileSegmentaion => RemoteFileProperties.IsResumable;
+        /// <summary>
+        /// Indicates if the remote server supports the file resuming or not
+        /// </summary>
+        public bool IsRemoteServerSupportResuming => RemoteFileProperties.IsResumable;
 
 
         /// <summary>
-        /// Download a file async.
+        /// Updates the downloader with the new changes that happened to the remote file, to match the least changes to be able to resume downloading the file.
         /// </summary>
-        /// <param name="fileProperties">Represents the properties of the remote file</param>
-        /// <param name="CurrentProgress">Gives you real-time download Current Progress</param>
-        /// <param name="cancellationToken">Responsible for cancelling the current download process</param>
-        public async Task DownloadFileAsync(ServerFile fileProperties, Action<float> CurrentProgress, CancellationToken cancellationToken = default)
+        /// <returns>
+        /// Updates the remote file properties.
+        /// </returns>
+        public async Task UpdateRemoteFilePropertiesForResuming()
         {
-            FileProperites localFile = FileUtilities.GetFileProperites(LocalFilePath);
-
-            if(localFile.Length >= fileProperties.Size) // it got been downloaded before!
+            if (IsRemoteServerSupportResuming)
             {
-                return;
-            }
-            else if(localFile.Length == 0) // Nothing has been downloaded before!
-            {
-                await DownloadAsync(fileProperties, CurrentProgress, cancellationToken);
-            }
-            else // It needs resuming
-            {
-                if (fileProperties.IsResumable)
+                using(Stream localFile = new FileStream(LocalFileFullPath, FileMode.Open, FileAccess.Read))
                 {
                     using (HttpClient httpClient = new HttpClient())
                     {
                         httpClient.DefaultRequestHeaders.Range = new RangeHeaderValue(localFile.Length, null);
-                        fileProperties.TotalReadBytes = localFile.Length;
-                        fileProperties.DownloadContent = await httpClient.GetStreamAsync(fileProperties.Url);
+                        RemoteFileProperties.TotalReadBytes = localFile.Length;
+                        RemoteFileProperties.DownloadContent = await httpClient.GetStreamAsync(Url);
                     }
-
-                    await DownloadAsync(fileProperties, CurrentProgress, cancellationToken);
-                }
-                else
-                {
-                    File.Delete(LocalFilePath); // Delete the file, then start downloading over
-                    await DownloadAsync(fileProperties, CurrentProgress, cancellationToken);
                 }
             }
         }
 
-        private async Task DownloadAsync(ServerFile fileProperties, Action<float> CurrentProgress, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Download the remote file.
+        /// </summary>
+        /// <param name="CurrentProgress">Gets the current downloading process</param>
+        /// <param name="cancellationToken">A token to cancel the downloading process if you want.</param>
+        /// <returns></returns>
+        public async Task DownloadFileAsync(Action<float> CurrentProgress, CancellationToken cancellationToken = default)
         {
+            Pipe Pipeline = new Pipe();
+
             await Task.WhenAll
-                     (
-                             WriterFileAsync(fileProperties, CurrentProgress, cancellationToken),
-                             ConstructFileAsync(cancellationToken)
-                     );
-        }
-        private async Task WriterFileAsync(ServerFile fileProperties, Action<float> CurrentProgress, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                int bytesRead;
-                while ((bytesRead = await fileProperties.DownloadContent.ReadAsync(Pipeline.Writer.GetMemory(), cancellationToken)) > 0) // Where the downloading part is happening
-                {
-                    CurrentProgress.Invoke(((fileProperties.TotalReadBytes += bytesRead) / (float)fileProperties.Size) * 100); // To Get the current percentage.
-                    Pipeline.Writer.Advance(bytesRead);
-                    var flushResult = await Pipeline.Writer.FlushAsync(cancellationToken);
-                    if (flushResult.IsCanceled) break;
-                    if (flushResult.IsCompleted) break;
-                }
-                Pipeline.Writer.Complete();
-            }
-            catch
-            {
-                throw new Exception("Downloading Process has been stoped!");
-            }
-        }
-        private async Task ConstructFileAsync(CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                using (Stream LocalFile = new FileStream(LocalFilePath, FileMode.Append, FileAccess.Write))
-                {
-                    LocalFile.Seek(LocalFile.Length, SeekOrigin.Begin);
-                    while (true)
+                (
+                    Task.Run(async() => 
                     {
-                        var ReadResult = await Pipeline.Reader.ReadAsync(cancellationToken);
-                        foreach (var segment in ReadResult.Buffer)
+                        int bytesRead;
+                        while ((bytesRead = await RemoteFileProperties.DownloadContent.ReadAsync(Pipeline.Writer.GetMemory(), cancellationToken)) > 0) // Where the downloading part is happening
                         {
-                            await LocalFile.WriteAsync(segment, cancellationToken);
+                            CurrentProgress.Invoke(((RemoteFileProperties.TotalReadBytes += bytesRead) / (float)RemoteFileProperties.Size) * 100); // To Get the current percentage.
+                            Pipeline.Writer.Advance(bytesRead);
+                            var flushResult = await Pipeline.Writer.FlushAsync(cancellationToken);
+                            if (flushResult.IsCanceled) break;
+                            if (flushResult.IsCompleted) break;
                         }
+                        Pipeline.Writer.Complete();
+                    }), 
 
-                        Pipeline.Reader.AdvanceTo(ReadResult.Buffer.End);
-
-                        if (ReadResult.IsCompleted || ReadResult.IsCanceled)
+                    Task.Run(async () => 
+                    {
+                        using (Stream LocalFile = new FileStream(LocalFileFullPath, FileMode.Append, FileAccess.Write))
                         {
-                            break;
+                            LocalFile.Seek(LocalFile.Length, SeekOrigin.Begin);
+                            while (true)
+                            {
+                                var ReadResult = await Pipeline.Reader.ReadAsync(cancellationToken);
+                                foreach (var segment in ReadResult.Buffer)
+                                {
+                                    await LocalFile.WriteAsync(segment, cancellationToken);
+                                }
+
+                                Pipeline.Reader.AdvanceTo(ReadResult.Buffer.End);
+
+                                if (ReadResult.IsCompleted || ReadResult.IsCanceled)
+                                {
+                                    break;
+                                }
+                            }
                         }
-                    }
-                }
-                Pipeline.Reader.Complete();
-            }
-            catch
-            {
-                throw new Exception("Writing the data to your local computer has been stoped!");
-            }
+                        Pipeline.Reader.Complete();
+                    })
+                );
         }
-      
+     
     }
 }
