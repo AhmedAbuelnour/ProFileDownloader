@@ -1,29 +1,114 @@
-# ProFileDownloader-PFD
-Provide an easy and professional way to download files.
+###  Pro File Downloader
 
-# How To Get Started!
+* It Provides High Performance in downloading by using the new API System.IO.Pipelines
+* It supports Resuming 
+* It supports File Segmentation 
+
+
+**Getting Started**
+
+> File Downloading, No Resuming , No File Segmentation 
+
+
 ```
-using ProFileDownloader.NetworkFile;
 using ProFileDownloader.FileTransferer;
-namespace ConsoleApp
+
+static async Task Main(string[] args)
 {
-    class Program
+          Downloader downloader = new Downloader("Url", "DirectoryPath");
+          await downloader.LoadRemoteFilePropertiesAsync();
+          await downloader.DownloadFileAsync((e) =>
+          {
+                Console.WriteLine(e); // Current Progress
+          });
+}
+```
+
+> File Downloading, Yes Resuming , No File Segmentation 
+
+```
+using ProFileDownloader.FileTransferer;
+
+static async Task Main(string[] args)
+{
+    Downloader downloader = new Downloader("Url", "DirectoryPath");
+    await downloader.LoadRemoteFilePropertiesAsync();
+    if (downloader.IsRemoteServerSupportResuming)
     {
-        static async Task Main(string[] args)
-        {
-            FileDownloader fileDownloader = new FileDownloader
-            {
-                LocalFilePath = "fileName.extension"
-            };
+        await downloader.UpdateRemoteFilePropertiesForResuming();
+    }
+    await downloader.DownloadFileAsync((e) =>
+    {
+        Console.WriteLine(e); // Current Progress
+    });
+}
+```
 
-            ServerFile serverFile = await FileUtilities.GetServerFilePropertiesAsync("Url");
+> File Downloading, No Resuming , Yes File Segmentation 
 
-            await fileDownloader.DownloadFileAsync(serverFile, (e) =>
+```
+using ProFileDownloader.FileTransferer;
+
+static async Task Main(string[] args)
+{
+      FileSegmentaionDownloader fileDownloader = new FileSegmentaionDownloader("Url", "DirectoryPath");
+
+            await fileDownloader.LoadRemoteFilePropertiesAsync();
+
+            if (fileDownloader.IsRemoteServerSupportFileSegmentaion)
             {
-                Console.WriteLine($"{e}");
-            });
-         }
-     }
+                await fileDownloader.LoadFileSegmentsAsync();
+               // Store this content on your own, to be used for later resuming 
+                string JsonContentToSave = fileDownloader.GetBasicSegmentsInfo();
+
+                await fileDownloader.DownloadFileSegmensAsync((e) => 
+                {
+                    Console.WriteLine(e);
+                });
+                await fileDownloader.ReconstructSegmentsAsync();
+            }
+            else
+            {
+                await fileDownloader.DownloadFileAsync((e) =>
+                {
+                    Console.WriteLine(e);
+                });
+            } 
+}
+```
+> File Downloading, Yes Resuming , Yes File Segmentation 
+
+```
+using ProFileDownloader.FileTransferer;
+
+static async Task Main(string[] args)
+{
+ FileSegmentaionDownloader fileDownloader = new FileSegmentaionDownloader("Url", "DirectoryPath");
+
+await fileDownloader.LoadRemoteFilePropertiesAsync();
+
+if (fileDownloader.IsRemoteServerSupportFileSegmentaion)
+{
+
+    await fileDownloader.LoadFileSegmentsForResumingAsync("Json Content That you stored");
+
+    await fileDownloader.DownloadFileSegmensAsync((e) => 
+    {
+        Console.WriteLine(e);
+    });
+
+    await fileDownloader.ReconstructSegmentsAsync();
+
+}
+else
+{
+    await fileDownloader.DownloadFileAsync((e) =>
+    {
+        Console.WriteLine(e);
+    });
+}
+
 }
 
 ```
+
