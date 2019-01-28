@@ -1,4 +1,4 @@
-﻿namespace ProFileDownloader.NetworkFile
+namespace ProFileDownloader.NetworkFile
 {
     using System;
     using System.Collections.Generic;
@@ -13,34 +13,8 @@
     /// <summary>
     /// Provides Utility Methods for dealing with files.
     /// </summary>
-    public static class FileUtilities
+    internal static class FileUtilities
     {
-        internal async static Task<bool> IsResumable(string Url)
-        {
-            try
-            {
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Range = new RangeHeaderValue(1, 1);
-                    using (HttpResponseMessage Result = await httpClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead))
-                    {
-                        if (Result.StatusCode == HttpStatusCode.PartialContent)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
         #region extension to MIME type list
         private static readonly IDictionary<string, string> MediaTypeMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
         {".asf", "video/x-ms-asf"},
@@ -111,10 +85,7 @@
         #endregion
         internal static string GetFileExtension(this string MediaType) => MediaTypeMappings.FirstOrDefault(x => x.Value == MediaType).Key;
 
-
-
-        static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
+        internal static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
         internal static string SizeSuffix(this long value, int decimalPlaces = 1)
         {
             if (decimalPlaces < 0) { throw new ArgumentOutOfRangeException("decimalPlaces"); }
@@ -140,67 +111,6 @@
                 adjustedSize,
                 SizeSuffixes[mag]);
         }
-
-
-
-
-        internal static FileProperites GetFileProperites(string LocalFilePath)
-        {
-            try
-            {
-                using (Stream localFile = new FileStream(LocalFilePath, FileMode.Open, FileAccess.Read))
-                {
-                    return new FileProperites
-                    {
-                        FilePath = LocalFilePath,
-                        Length = localFile.Length,
-                        FullName = Path.GetFileName(LocalFilePath)
-                    };
-                }
-            }
-            catch
-            {
-                throw new Exception("No such file is found with the provided path, make sure to provide a correct path");
-            }
-        }
-
-        /// <summary>
-        /// Gets the properties of the remote file
-        /// </summary>
-        /// <param name="Url">The location of the remote file.</param>
-        /// <returns>Properties of the remote file.</returns>
-        public static async Task<ServerFile> GetServerFilePropertiesAsync(string Url)
-        {
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                if (string.IsNullOrWhiteSpace(Url)) throw new ArgumentNullException("Url", "Can't let Url to be empty!");
-
-                // Validation for https and http
-                if (!(Url.StartsWith("https://") || Url.StartsWith("http://"))) throw new Exception("Only Support Http, Https protocols");
-
-                // Sends Http Get Request
-                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
-
-                if (httpResponseMessage.IsSuccessStatusCode == false)
-                {
-                    throw new Exception(httpResponseMessage.ReasonPhrase);
-                }
-                return new ServerFile
-                {
-                    Url = Url,
-                    Name = Regex.Match(httpResponseMessage.Content.Headers?.ContentDisposition?.FileName ?? httpResponseMessage.RequestMessage.RequestUri.Segments.LastOrDefault(), "[A-Za-z0-9\\s_-]+").Value,
-                    MediaType = httpResponseMessage.Content.Headers.ContentType.MediaType,
-                    Size = httpResponseMessage.Content.Headers.ContentLength.GetValueOrDefault(),
-                    Extension = httpResponseMessage.Content.Headers.ContentType.MediaType.GetFileExtension(),
-                    IsResumable = await IsResumable(Url),
-                    DownloadContent = await httpResponseMessage.Content.ReadAsStreamAsync(),
-                    TotalReadBytes = 0
-                };
-            }
-        }
-
-
 
     }
 }
