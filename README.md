@@ -4,9 +4,9 @@
 * It supports Resuming
 * It supports File Segmentation
 * It Shows Now: 
-    ** Current % 
-    ** Current Speed 
-    ** How Much has been downloaded out of what is left
+    1. Current % 
+    2. Current Speed 
+    3. How Much has been downloaded out of what is left
 
 ** Getting Started**
 
@@ -57,7 +57,7 @@ static async Task Main(string[] args)
 
     await fileDownloader.GenerateSegmentsAsync(); // Generate segments 
  
-    // Now: fileDownloader.BasicSegmentsInfo : Is a property which has the JSON data of the generated Segments, Store it somewhere.
+    // Note: fileDownloader.BasicSegmentsInfo : Is a property which has the JSON data of the generated Segments, Store it somewhere.
     
      foreach (var item in fileDownloader.SegmentDownloaders) // to take the advantages of Segmentaions do it in Parallel.
      {
@@ -67,7 +67,7 @@ static async Task Main(string[] args)
            });
      }
 
-     await manager.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.            
+     await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.            
                 
  }
 ```
