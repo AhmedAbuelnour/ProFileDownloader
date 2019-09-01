@@ -1,0 +1,110 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.0": {
+      "System.IO.Pipelines/4.6.0-preview8.19405.3": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/System.IO.Pipelines.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/System.IO.Pipelines.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "System.IO.Pipelines/4.6.0-preview8.19405.3": {
+      "sha512": "NUaBrHvgui+JrvouaQKUrPL5sMnexlxyye2yjn66aEzxgkMNNgzG5R22wRMtD1xyVe9Wv3vzzG8I0ZeS5VWb6A==",
+      "type": "package",
+      "path": "system.io.pipelines/4.6.0-preview8.19405.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp3.0/System.IO.Pipelines.dll",
+        "lib/netcoreapp3.0/System.IO.Pipelines.xml",
+        "lib/netstandard1.3/System.IO.Pipelines.dll",
+        "lib/netstandard1.3/System.IO.Pipelines.xml",
+        "lib/netstandard2.0/System.IO.Pipelines.dll",
+        "lib/netstandard2.0/System.IO.Pipelines.xml",
+        "ref/netcoreapp2.0/System.IO.Pipelines.dll",
+        "system.io.pipelines.4.6.0-preview8.19405.3.nupkg.sha512",
+        "system.io.pipelines.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.0": [
+      "System.IO.Pipelines >= 4.6.0-preview8.19405.3"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Ahmed\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "4.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj",
+      "projectName": "ProFileDownloader",
+      "projectPath": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj",
+      "packagesPath": "C:\\Users\\Ahmed\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Ahmed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.0": {
+        "dependencies": {
+          "System.IO.Pipelines": {
+            "target": "Package",
+            "version": "[4.6.0-preview8.19405.3, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

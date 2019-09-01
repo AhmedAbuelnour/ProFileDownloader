@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>ProFileDownloader</AssemblyName>
+    <RootNamespace>ProFileDownloader</RootNamespace>
+    <Authors>Ahmed Abu El-Nour</Authors>
+    <Company>Personal</Company>
+    <Product>ProFileDownloader - PFD</Product>
+    <Description>Provide an easy and professional way to download files.
+* It Provides High Performance in downloading by using the new API System.IO.Pipelines
+* It supports Resuming 
+* It supports File Segmentation 
+</Description>
+    <Copyright>Free to use, Free to modify!</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageIconUrl>https://image.flaticon.com/icons/svg/189/189074.svg</PackageIconUrl>
+    <PackageTags>WPF WindowsFroms Console UWP .NETCore Xamarin.Forms</PackageTags>
+    <Company>Personal</Company>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>C:\Users\Ahmed\source\repos\FileDownloaderManager\FileDownloaderManager\ProFileDownloader.xml</DocumentationFile>
+    <PublishDocumentationFile>true</PublishDocumentationFile>
+    <PublishDependencyDocumentationFiles>true</PublishDependencyDocumentationFiles>
+    <PackageReleaseNotes>
+</PackageReleaseNotes>
+    <Version>4.0</Version>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+    <PackageProjectUrl>https://github.com/AhmedAbuelnour/ProFileDownloader</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AhmedAbuelnour/ProFileDownloader</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>7.3</LangVersion>
+    <PackageId>ProFileDownloader</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Pipelines" Version="4.6.0-preview8.19405.3" />
+  </ItemGroup>
+</Project>
