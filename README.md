@@ -8,7 +8,7 @@ What is New in V5?
     1. Current % 
     2. Current Speed 
     3. How Much has been downloaded out of what is left
-* Gives your higher control over the segments downloading 
+* Gives you higher control over the segments downloading 
 * Cross platform - .NET Core 3.0 
 * Higher speed Json Serializer and Deserializer 
 
@@ -63,13 +63,14 @@ static async Task Main(string[] args)
  
     // Note: fileDownloader.BasicSegmentsInfo : Is a property which has the JSON data of the generated Segments, Store it somewhere.
     
-     foreach (var item in fileDownloader.SegmentDownloaders) // to take the advantages of Segmentaions do it in Parallel.
-     {
-           item.DownloadSegment((e) =>
-           {
-                  Console.WriteLine($"{e.CurrentPercentage} - {e.DownloadSpeed} - {e.DownloadedProgress}");
-           });
-     }
+    Parallel.ForEach(fileDownloader.SegmentDownloaders, // to take the advantages of Segmentaions 
+    (e) =>
+    {
+        e.DownloadSegment((x) =>
+        {
+            Console.WriteLine($"{x.CurrentPercentage} - {x.DownloadSpeed} - {x.DownloadedProgress}");
+        });
+    });
 
      await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.            
                 
@@ -88,13 +89,14 @@ static async Task Main(string[] args)
 
     await fileDownloader.UploadGeneratedSegmentsForResuimgAsync("Json Content of the segments (BasicSegmentsInfo) "));
    
-    foreach (var item in fileDownloader.SegmentDownloaders) // to take the advantages of Segmentaions do it in Parallel.
+    Parallel.ForEach(fileDownloader.SegmentDownloaders, // to take the advantages of Segmentaions 
+    (e) =>
     {
-           item.DownloadSegment((e) =>
-           {
-                  Console.WriteLine($"{e.CurrentPercentage} - {e.DownloadSpeed} - {e.DownloadedProgress}");
-           });
-    }
+        e.DownloadSegment((x) =>
+        {
+            Console.WriteLine($"{x.CurrentPercentage} - {x.DownloadSpeed} - {x.DownloadedProgress}");
+        });
+    });
 
    await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.  
      
