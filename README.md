@@ -3,15 +3,18 @@
 * It Provides High Performance in downloading by using the new API System.IO.Pipelines
 * It supports Resuming
 * It supports File Segmentation
-> What is New in V5?
-* Downliading Now Shows: 
-    1. Current % 
-    2. Current Speed 
-    3. How Much has been downloaded out of what is left
 * Gives you higher control over the segments downloading 
 * Cross platform - .NET Core 3.0 
 * Higher speed Json Serializer and Deserializer 
+* Downloading Now Shows: 
+    1. Current % 
+    2. Current Speed 
+    3. How Much has been downloaded out of what is left
 
+> What is New in V6?
+ * Support Streaming files Uploading/Downloading at the same time Sender/Recevier respectively
+ * Limitedless file size uploading/downloading
+ 
 ** Getting Started**
 
 > File Downloading, No Resuming, No File Segmentation
@@ -51,7 +54,7 @@ static async Task Main(string[] args)
 > File Downloading, No Resuming , Yes File Segmentation 
 
 ```
-using ProFileDownloader.FileTransferer;
+using ProFileDownloader.FileNetwork;
 
 static async Task Main(string[] args)
 {
@@ -79,7 +82,7 @@ static async Task Main(string[] args)
 > File Downloading, Yes Resuming , Yes File Segmentation 
 
 ```
-using ProFileDownloader.FileTransferer;
+using ProFileDownloader.FileNetwork;
 
 static async Task Main(string[] args)
 {
@@ -100,6 +103,46 @@ static async Task Main(string[] args)
 
    await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.  
      
+}
+
+```
+
+
+> File Uploading
+
+```
+using ProFileDownloader.FileNetwork;
+
+static async Task Main(string[] args)
+{
+    FileTransfer fileTransfer = new FileTransfer();
+
+    await fileTransfer.ConnectSenderAsync();
+
+    Console.WriteLine("Enter the receiver user id:");
+
+    string UserID = Console.ReadLine();
+
+    await fileTransfer.SendStreamingAsync(@"File Path", UserID);
+
+}
+
+```
+
+> File Downloading
+
+```
+using ProFileDownloader.FileNetwork;
+
+static async Task Main(string[] args)
+{
+    FileTransfer fileTransfer = new FileTransfer();
+
+    string UserID =  await fileTransfer.ConnectReceiverAsync();
+
+    Console.WriteLine($"Your Receving ID Is: {UserID}");
+
+    await fileTransfer.ReceiveStreamingAsync(@"File Path, where you want to download it.");
 }
 
 ```
