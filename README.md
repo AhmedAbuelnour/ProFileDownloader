@@ -3,15 +3,18 @@
 * It Provides High Performance in downloading by using the new API System.IO.Pipelines
 * It supports Resuming
 * It supports File Segmentation
-> What is New in V5?
-* Downliading Now Shows: 
-    1. Current % 
-    2. Current Speed 
-    3. How Much has been downloaded out of what is left
 * Gives you higher control over the segments downloading 
 * Cross platform - .NET Core 3.0 
 * Higher speed Json Serializer and Deserializer 
+* Downloading Now Shows: 
+    1. Current % 
+    2. Current Speed 
+    3. How Much has been downloaded out of what is left
 
+> What is New in V6?
+ * Support Streaming files Uploading/Downloading at the same time Sender/Recevier respectively
+ * Limitedless file size uploading/downloading
+ 
 ** Getting Started**
 
 > File Downloading, No Resuming, No File Segmentation
