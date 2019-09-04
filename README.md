@@ -3,7 +3,14 @@
 * It Provides High Performance in downloading by using the new API System.IO.Pipelines
 * It supports Resuming
 * It supports File Segmentation
-
+> What is New in V5?
+* Downliading Now Shows: 
+    1. Current % 
+    2. Current Speed 
+    3. How Much has been downloaded out of what is left
+* Gives you higher control over the segments downloading 
+* Cross platform - .NET Core 3.0 
+* Higher speed Json Serializer and Deserializer 
 
 ** Getting Started**
 
@@ -11,15 +18,14 @@
 
 
 ```
-using ProFileDownloader.FileTransferer;
 
 static async Task Main(string[] args)
 {
     Downloader downloader = new Downloader("Url", "DirectoryPath");
     await downloader.LoadRemoteFilePropertiesAsync();
-    await downloader.DownloadFileAsync((e) =>
+    downloader.DownloadFile((e) =>
     {
-        Console.WriteLine(e); // Current Progress
+       Console.WriteLine($"{e.CurrentPercentage} - {e.DownloadSpeed} - {e.DownloadedProgress}");
     });
 }
 ```
@@ -27,19 +33,17 @@ static async Task Main(string[] args)
 > File Downloading, Yes Resuming , No File Segmentation 
 
 ```
-using ProFileDownloader.FileTransferer;
 
 static async Task Main(string[] args)
 {
     Downloader downloader = new Downloader("Url", "DirectoryPath");
     await downloader.LoadRemoteFilePropertiesAsync();
-    if (downloader.IsRemoteServerSupportResuming)
+
+    await downloader.UpdateRemoteFilePropertiesForResumingAsync();
+   
+    downloader.DownloadFile((e) =>
     {
-        await downloader.UpdateRemoteFilePropertiesForResuming();
-    }
-    await downloader.DownloadFileAsync((e) =>
-    {
-        Console.WriteLine(e); // Current Progress
+       Console.WriteLine($"{e.CurrentPercentage} - {e.DownloadSpeed} - {e.DownloadedProgress}");
     });
 }
 ```
@@ -51,30 +55,26 @@ using ProFileDownloader.FileTransferer;
 
 static async Task Main(string[] args)
 {
-    FileSegmentaionDownloader fileDownloader = new FileSegmentaionDownloader("Url", "DirectoryPath");
+    FileSegmentaionManager fileDownloader = new FileSegmentaionManager("Url", "DirectoryPath");
 
-    await fileDownloader.LoadRemoteFilePropertiesAsync();
+    await fileDownloader.LoadRemoteFilePropertiesAsync(); Load the file Property to be ready for segmentation process.
 
-    if (fileDownloader.IsRemoteServerSupportFileSegmentaion)
+    await fileDownloader.GenerateSegmentsAsync(); // Generate segments 
+ 
+    // Note: fileDownloader.BasicSegmentsInfo : Is a property which has the JSON data of the generated Segments, Store it somewhere.
+    
+    Parallel.ForEach(fileDownloader.SegmentDownloaders, // to take the advantages of Segmentaions 
+    (e) =>
     {
-        await fileDownloader.LoadFileSegmentsAsync();
-        // Store this content on your own, to be used for later resuming 
-        string JsonContentToSave = fileDownloader.GetBasicSegmentsInfo();
+        e.DownloadSegment((x) =>
+        {
+            Console.WriteLine($"{x.CurrentPercentage} - {x.DownloadSpeed} - {x.DownloadedProgress}");
+        });
+    });
 
-        await fileDownloader.DownloadFileSegmensAsync((e) =>
-        {
-            Console.WriteLine(e);
-        });
-        await fileDownloader.ReconstructSegmentsAsync();
-    }
-    else
-    {
-        await fileDownloader.DownloadFileAsync((e) =>
-        {
-            Console.WriteLine(e);
-        });
-    }
-}
+     await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.            
+                
+ }
 ```
 > File Downloading, Yes Resuming , Yes File Segmentation 
 
@@ -83,31 +83,23 @@ using ProFileDownloader.FileTransferer;
 
 static async Task Main(string[] args)
 {
-    FileSegmentaionDownloader fileDownloader = new FileSegmentaionDownloader("Url", "DirectoryPath");
+    FileSegmentaionManager fileDownloader = new FileSegmentaionManager("Url", "DirectoryPath");
 
-    await fileDownloader.LoadRemoteFilePropertiesAsync();
+    await fileDownloader.LoadRemoteFilePropertiesAsync(); Load the file Property to be ready for segmentation process.
 
-    if (fileDownloader.IsRemoteServerSupportFileSegmentaion)
+    await fileDownloader.UploadGeneratedSegmentsForResuimgAsync("Json Content of the segments (BasicSegmentsInfo) "));
+   
+    Parallel.ForEach(fileDownloader.SegmentDownloaders, // to take the advantages of Segmentaions 
+    (e) =>
     {
-
-        await fileDownloader.LoadFileSegmentsForResumingAsync("Json Content That you stored");
-
-        await fileDownloader.DownloadFileSegmensAsync((e) =>
+        e.DownloadSegment((x) =>
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"{x.CurrentPercentage} - {x.DownloadSpeed} - {x.DownloadedProgress}");
         });
+    });
 
-        await fileDownloader.ReconstructSegmentsAsync();
-
-    }
-    else
-    {
-        await fileDownloader.DownloadFileAsync((e) =>
-        {
-            Console.WriteLine(e);
-        });
-    }
-
+   await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.  
+     
 }
 
 ```
