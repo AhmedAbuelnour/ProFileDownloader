@@ -144,7 +144,7 @@
         </member>
         <member name="M:ProFileDownloader.NetowrkFile.FileTransfer.ReceiveStreamingAsync(System.String)">
             <summary>
-            Start Receving the streamed data from the server.
+            Start Receving the streamed data from the server, then it is automatically close the connection.
             </summary>
             <param name="fileName">The path which you want to store the streamed data into.</param>
             <returns></returns>

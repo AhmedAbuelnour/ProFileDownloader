@@ -14,9 +14,12 @@ namespace ProFileDownloader.NetowrkFile
     public class FileTransfer
     {
         private readonly HubConnection hubConnection;
+        /// <summary>
+        /// Initialize the transfer connection.
+        /// </summary>
         public FileTransfer()
         {
-            hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:5001/DownloaderHub").WithAutomaticReconnect().AddMessagePackProtocol().Build();
+            hubConnection = new HubConnectionBuilder().WithUrl("https://prodownloader.azurewebsites.net/downloaderhub").WithAutomaticReconnect().AddMessagePackProtocol().Build();
         }
 
         /// <summary>

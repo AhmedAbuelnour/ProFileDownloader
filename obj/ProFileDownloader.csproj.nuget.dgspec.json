@@ -43,15 +43,15 @@
           "dependencies": {
             "Microsoft.AspNetCore.SignalR.Client": {
               "target": "Package",
-              "version": "[3.0.0-preview8.19405.7, )"
+              "version": "[3.0.0-preview9.19424.4, )"
             },
             "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": {
               "target": "Package",
-              "version": "[3.0.0-preview8.19405.7, )"
+              "version": "[3.0.0-preview9.19424.4, )"
             },
             "System.IO.Pipelines": {
               "target": "Package",
-              "version": "[4.6.0-preview8.19405.3, )"
+              "version": "[4.6.0-preview9.19421.4, )"
             }
           },
           "imports": [
@@ -69,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview9-014004\\RuntimeIdentifierGraph.json"
         }
       }
     }
