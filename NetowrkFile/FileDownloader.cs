@@ -1,12 +1,11 @@
-﻿namespace ProFileDownloader.FileTransferer
+﻿namespace ProFileDownloader.NetowrkFile
 {
-    using ProFileDownloader.NetworkFile;
+    using ProFileDownloader.Utilities;
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.IO.Pipelines;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading;
@@ -14,13 +13,10 @@
     /// <summary>
     /// A class which represents a file downloader
     /// </summary>
-    public class Downloader
+    public class FileDownloader
     {
         string Url { get; set; }
         string DirectoryPath { get; set; }
-        /// <summary>
-        /// Giving a name to overwrite the remote suggested file name.
-        /// </summary>
         string SuggestedFileName { get; set; }
         ServerFile RemoteFileProperties { get; set; }
         string LocalFileFullPath { get; set; }
@@ -31,7 +27,7 @@
         /// <param name="url">Url of the remote file.</param>
         /// <param name="directoryPath">Where the local file should be saved at.</param>
         /// <param name="suggestedName">Giving a name and extension to overwrite the remote suggested file name.</param>
-        public Downloader(string url, string directoryPath, string suggestedName = default)
+        public FileDownloader(string url, string directoryPath, string suggestedName = default)
         {
             Url = url;
             DirectoryPath = directoryPath;

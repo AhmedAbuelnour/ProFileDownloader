@@ -1,4 +1,4 @@
-﻿using ProFileDownloader.NetworkFile;
+﻿using ProFileDownloader.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ProFileDownloader.FileTransferer
+namespace ProFileDownloader.NetowrkFile
 {
     /// <summary>
     /// A class which represents segments downloader
@@ -18,9 +18,8 @@ namespace ProFileDownloader.FileTransferer
         string DirectoryPath { get; set; }
         string SuggestedFileName { get; set; }
         string LocalFileFullPath { get; set; }
-        ServerFile RemoteFileProperties { get; set; }
         int SegmentNumbers = 0;
-
+        ServerFile RemoteFileProperties { get; set; }
         /// <summary>
         /// Represent the segments, which are downloadable.
         /// </summary>
@@ -121,11 +120,11 @@ namespace ProFileDownloader.FileTransferer
 
 
         /// <summary>
-        /// 
+        /// Update the segments info, to carry on where they left.
         /// </summary>
-        /// <param name="JsonContent"></param>
+        /// <param name="JsonContent">The application stored (BasicSegmentsInfo) json value, which has some basic info about the segments.</param>
         /// <returns></returns>
-        public async Task UploadGeneratedSegmentsForResuimgAsync(string JsonContent)
+        public async Task UpdateGeneratedSegmentsForResuimgAsync(string JsonContent)
         {
             var Serversegs = JsonSerializer.Deserialize<IList<ServerSegment>>(JsonContent);
 
@@ -140,7 +139,6 @@ namespace ProFileDownloader.FileTransferer
         }
 
 
-        // 2. Reconstracut the segments
         /// <summary>
         /// Reconstract the segments from the temp files that got created.
         /// </summary>

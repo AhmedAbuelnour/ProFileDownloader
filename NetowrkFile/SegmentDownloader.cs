@@ -1,16 +1,12 @@
-﻿namespace ProFileDownloader.FileTransferer
+﻿namespace ProFileDownloader.NetowrkFile
 {
-    using ProFileDownloader.NetworkFile;
+    using ProFileDownloader.Utilities;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.IO.Pipelines;
-    using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     /// <summary>
@@ -20,24 +16,22 @@
     {
         internal bool IsDownloaded { get; set; }
         string Url { get; set; }
-        /// <summary>
-        /// Giving a name to overwrite the remote suggested file name.
-        /// </summary>
         internal ServerSegment RemoteSegmentProperties { get; set; }
         internal (long Start, long End) DownloadRange { get; set; }
-
         Stopwatch SWatch { get; set; } = new Stopwatch();    // The stopwatch which we will be using to calculate the download speed
+
         /// <summary>
         /// Initialize the downloader.
         /// </summary>
         /// <param name="url">Url of the remote file.</param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
+        /// <param name="start">Start Segment's Position</param>
+        /// <param name="end">End Segment's Position</param>
         public SegmentDownloader(string url, long start, long end)
         {
             Url = url;
             DownloadRange = (start, end);
         }
+
         /// <summary>
         /// Initialize the downloader.
         /// </summary>
