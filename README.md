@@ -54,7 +54,7 @@ static async Task Main(string[] args)
 > File Downloading, No Resuming , Yes File Segmentation 
 
 ```
-using ProFileDownloader.FileTransferer;
+using ProFileDownloader.FileNetwork;
 
 static async Task Main(string[] args)
 {
@@ -82,7 +82,7 @@ static async Task Main(string[] args)
 > File Downloading, Yes Resuming , Yes File Segmentation 
 
 ```
-using ProFileDownloader.FileTransferer;
+using ProFileDownloader.FileNetwork;
 
 static async Task Main(string[] args)
 {
@@ -103,6 +103,46 @@ static async Task Main(string[] args)
 
    await fileDownloader.ReconstructSegmentsAsync(); // Rebuild the segments to one single file.  
      
+}
+
+```
+
+
+> File Uploading
+
+```
+using ProFileDownloader.FileNetwork;
+
+static async Task Main(string[] args)
+{
+    FileTransfer fileTransfer = new FileTransfer();
+
+    await fileTransfer.ConnectSenderAsync();
+
+    Console.WriteLine("Enter the receiver user id:");
+
+    string UserID = Console.ReadLine();
+
+    await fileTransfer.SendStreamingAsync(@"File Path", UserID);
+
+}
+
+```
+
+> File Downloading
+
+```
+using ProFileDownloader.FileNetwork;
+
+static async Task Main(string[] args)
+{
+    FileTransfer fileTransfer = new FileTransfer();
+
+    string UserID =  await fileTransfer.ConnectReceiverAsync();
+
+    Console.WriteLine($"Your Receving ID Is: {UserID}");
+
+    await fileTransfer.ReceiveStreamingAsync(@"File Path, where you want to download it.");
 }
 
 ```
