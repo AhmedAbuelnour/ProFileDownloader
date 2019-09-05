@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProFileDownloader.NetowrkFile
@@ -52,8 +50,8 @@ namespace ProFileDownloader.NetowrkFile
             async IAsyncEnumerable<byte[]> GetDataStream()
             {
                 using Stream LocalFile = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                //1 KB per chunk
-                byte[] memory = new byte[1024];  // Init with backing buffer. Otherwise you are trying to read 0 bytes into a zero sized buffer. 
+                //4kb per chunk
+                byte[] memory = new byte[4096];  // Init with backing buffer. Otherwise you are trying to read 0 bytes into a zero sized buffer. 
 
                 int bytesRead;
 

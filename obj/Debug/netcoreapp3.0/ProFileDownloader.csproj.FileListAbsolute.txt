@@ -6,4 +6,3 @@ C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreap
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.AssemblyInfo.cs
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.dll
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.pdb
-C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.csprojAssemblyReference.cache
