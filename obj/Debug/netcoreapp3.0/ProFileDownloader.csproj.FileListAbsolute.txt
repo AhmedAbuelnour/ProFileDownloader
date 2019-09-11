@@ -6,3 +6,14 @@ C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreap
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.AssemblyInfo.cs
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.dll
 C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.pdb
+C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.csprojAssemblyReference.cache
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Debug\netcoreapp3.0\ProFileDownloader.deps.json
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Debug\netcoreapp3.0\ProFileDownloader.dll
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Debug\netcoreapp3.0\ProFileDownloader.pdb
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Debug\netcoreapp3.0\ProFileDownloader.xml
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.csprojAssemblyReference.cache
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.csproj.CoreCompileInputs.cache
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.AssemblyInfoInputs.cache
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.AssemblyInfo.cs
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.dll
+D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\obj\Debug\netcoreapp3.0\ProFileDownloader.pdb

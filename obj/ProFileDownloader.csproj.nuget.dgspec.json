@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj": {}
+    "D:\\VS Projects\\Nuget\\Crystal\\ProFileDownloader\\ProFileDownloader\\ProFileDownloader.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj": {
+    "D:\\VS Projects\\Nuget\\Crystal\\ProFileDownloader\\ProFileDownloader\\ProFileDownloader.csproj": {
       "version": "4.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj",
+        "projectUniqueName": "D:\\VS Projects\\Nuget\\Crystal\\ProFileDownloader\\ProFileDownloader\\ProFileDownloader.csproj",
         "projectName": "ProFileDownloader",
-        "projectPath": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\ProFileDownloader.csproj",
+        "projectPath": "D:\\VS Projects\\Nuget\\Crystal\\ProFileDownloader\\ProFileDownloader\\ProFileDownloader.csproj",
         "packagesPath": "C:\\Users\\Ahmed\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ahmed\\source\\repos\\AhmedAbuelnour\\ProFileDownloader\\obj\\",
+        "outputPath": "D:\\VS Projects\\Nuget\\Crystal\\ProFileDownloader\\ProFileDownloader\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Ahmed\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"

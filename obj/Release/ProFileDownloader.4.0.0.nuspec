@@ -24,7 +24,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\bin\Release\netcoreapp3.0\ProFileDownloader.dll" target="lib\netcoreapp3.0\ProFileDownloader.dll" />
-    <file src="C:\Users\Ahmed\source\repos\AhmedAbuelnour\ProFileDownloader\bin\Release\netcoreapp3.0\ProFileDownloader.xml" target="lib\netcoreapp3.0\ProFileDownloader.xml" />
+    <file src="D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Release\netcoreapp3.0\ProFileDownloader.dll" target="lib\netcoreapp3.0\ProFileDownloader.dll" />
+    <file src="D:\VS Projects\Nuget\Crystal\ProFileDownloader\ProFileDownloader\bin\Release\netcoreapp3.0\ProFileDownloader.xml" target="lib\netcoreapp3.0\ProFileDownloader.xml" />
   </files>
 </package>
