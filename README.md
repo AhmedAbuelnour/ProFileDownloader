@@ -12,7 +12,8 @@
     3. How Much has been downloaded out of what is left
 
 > What is New in V6?
- * Support Streaming files Uploading/Downloading at the same time Sender/Recevier respectively
+ * Support Streaming files Uploading/Downloading at the same time Sender/Recevier respectively by using 
+  [FileStreamer](https://github.com/AhmedAbuelnour/ProFileDownloader/blob/master/FileStreamer.exe)
  * Limitedless file size uploading/downloading
  
 ** Getting Started**
