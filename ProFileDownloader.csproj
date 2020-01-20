@@ -10,7 +10,7 @@
     <Description>Provide an easy and professional way to download files.
 * It Provides High Performance in downloading by using the new API System.IO.Pipelines
 * It supports Resuming 
-* It supports File Segmentation 
+* It supports File Segmentation  * File Streaming 
 </Description>
     <Copyright>Free to use, Free to modify!</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -25,9 +25,9 @@
     <PublishDependencyDocumentationFiles>true</PublishDependencyDocumentationFiles>
     <PackageReleaseNotes>
 </PackageReleaseNotes>
-    <Version>4.0</Version>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <FileVersion>4.0.0.0</FileVersion>
+    <Version>6.0</Version>
+    <AssemblyVersion>6.0.0.0</AssemblyVersion>
+    <FileVersion>6.0.0.0</FileVersion>
     <PackageProjectUrl>https://github.com/AhmedAbuelnour/ProFileDownloader</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AhmedAbuelnour/ProFileDownloader</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -36,8 +36,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.0.0-preview9.19424.4" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.0.0-preview9.19424.4" />
-    <PackageReference Include="System.IO.Pipelines" Version="4.6.0-preview9.19421.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.0.0" />
+    <PackageReference Include="System.IO.Pipelines" Version="4.6.0" />
   </ItemGroup>
 </Project>
